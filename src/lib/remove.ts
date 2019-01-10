@@ -9,9 +9,12 @@ export const remove = (doc: HTMLElement, tags: RemoveTags) => {
   if (tags.style) selectors.push('style');
   if (tags.script) selectors.push('script');
 
-  doc.querySelectorAll(selectors.join(',')).forEach((el: HTMLElement) => {
+  doc.querySelectorAll(selectors.join(',')).forEach((el: HTMLElement) => { 
     if (!el.dataset.preserve) {
       el.remove();
+    } else {
+      // clear preserve attribute
+      el.removeAttribute('data-preserve');
     }
   });
 }
