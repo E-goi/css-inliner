@@ -29,9 +29,11 @@ export const find = (doc: HTMLElement, tags: ApplyTags): Promise<StyleMap[]> => 
         .forEach(style => doc.querySelector('head').append(style));
     }
 
-    return responses.map(clearMediaQueries)
+    return responses.map(clearComments)
+              .map(clearMediaQueries)
               .map(extract)
               .reduce((acc, cur) => acc.concat(cur), [])
+              .filter(style => style)
   });
 }
 
@@ -66,28 +68,40 @@ const clearMediaQueries = (content: string): string => {
   return content.replace(/@media[^{]+\{([\s\S]+?\})\s*\}/g, '');
 }
 
+/**
+ *
+ */
+const clearComments = (content: string): string => {
+  return content.replace(/\/\*(.|\n)*?\*\*\//g, '');
+}
+
 /*
  *
  */
 const extract = (content: string)  => {
-  const rg = new RegExp('([a-zA-Z0-9\\.#\\-_ ]+)[,{]$', 'gm');
+  const rg = new RegExp('([a-zA-Z0-9\\.#\-_ ]+)[,{]', 'gm');
   const selectors = content.match(rg);
   if (selectors) {
     return selectors.map(selector => {
-      const css = content.match(new RegExp(`^${selector}[^}]*`, 'gm'));
-      if (css) {
-        const so: StyleMap = {} as StyleMap;
-        so.selector= selector.replace(/[,{]/g, '').trim();
-        so.style = toObject(
-          css.join('')
-          .replace(selector, '')
-          .replace(/\n/g, '')
-          .replace(/;[ ]+/g, ';')
-          .trim()
-        );
+      try {
+        const css = content.match(new RegExp(`${selector}[^}]*`, 'gm'));
+        if (css) {
+          const style = toObject(
+            css.join('')
+            .replace(selector, '')
+            .replace(/\n/g, '')
+            .replace(/;[ ]+/g, ';')
+            .trim()
+          );
 
-        return so;
-      }
-    });
+          return selector
+            .replace(/\{/g, '')
+            .split(',')
+            .map(selector => selector.trim())
+            .map(selector => ({ selector, style }));
+        }
+      } catch (e) {}
+    })
+    .reduce((acc, cur) => acc.concat(cur), []);
   }
 }
