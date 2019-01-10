@@ -1,0 +1,17 @@
+{
+  "name": "css-inliner",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "serve": "webpack-dev-server",
+    "watch": "webpack --watch --progress --info-verbosity verbose"
+  },
+  "devDependencies": {
+    "ts-loader": "^5.3.2",
+    "typescript": "^3.2.2",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.2.0",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
