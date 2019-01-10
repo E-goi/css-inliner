@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/style.css" />
+    <style>
+      h1 {
+        color: #555333;
+        font-size: 12px;
+      }
+      div#base-content {
+        border: 1px solid red;
+        border-radius: 3px;
+      }
+      @media only screen and (max-width: 700px) {
+        body {
+          background-color: lightblue;
+        }
+      }
+    </style>
+
+    <script src="bundle.js"></script>
+    <script>
+      window.onload = () => {
+        cssInliner(
+          document.querySelector('html').innerHTML
+        ).then(formatted => {
+          console.log(formatted);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="navbar-custom">
+      <a href="#">LINK</a>
+    </div>
+
+    <br />
+    <br />
+
+    <a href="#" class="btn-success">Success</a>
+
+    <br />
+    <br />
+
+    <div id="base-content">
+      <h1 style="font-size: 28px;">Title</h1>
+      <p>description</p>
+    </div>
+  </body>
+</html>
