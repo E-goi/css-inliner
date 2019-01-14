@@ -30,7 +30,7 @@ export interface RemoveTags {
  *
  */
 const config: Configuration = {
-  url: window.location.href,
+  url: window.location.href.substr(0, window.location.href.length - 1),
   preserveMediaQueries: true,
   apply: {
     style: true,
@@ -64,4 +64,10 @@ export const PRESERVE_MEDIA_QUERIES = () => config.preserveMediaQueries;
 /**
  *
  */
-export const getUrl = (path: string): string => config.url + path;
+export const getUrl = (path: string): string => {
+  if (path.indexOf('/') !== 0) {
+    path = `/${path}`;
+  }
+  
+  return config.url + path
+};

@@ -1,4 +1,5 @@
 import { StyleMap, toObject } from './style';
+import { getUrl } from './config';
 
 interface InlineElementStyle {
   element: HTMLElement;
@@ -6,6 +7,9 @@ interface InlineElementStyle {
   preserve: (string | number)[];
 }
 
+/**
+ *
+ */
 export const apply = (doc: HTMLElement, styles: StyleMap[]): void => {
   const elements: InlineElementStyle[] = [];
 
@@ -43,3 +47,15 @@ export const apply = (doc: HTMLElement, styles: StyleMap[]): void => {
   });
 }
 
+/**
+ *
+ */
+export const relative = (doc: HTMLElement, url: string) => {
+  doc.querySelectorAll('[href],[src]').forEach((el: HTMLElement) => {
+    const attr = el.hasAttribute('href') ? 'href' : 'src';
+    const link = el.getAttribute(attr);
+    if (link.indexOf('http') === -1) {
+      el.setAttribute(attr, getUrl(link));
+    }
+  });
+}

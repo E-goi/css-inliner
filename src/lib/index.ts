@@ -1,7 +1,7 @@
 import { Configuration, mergeConfigurations } from './config';
 import { find } from './find';
 import { remove } from './remove';
-import { apply } from './apply';
+import { apply, relative  } from './apply';
 
 /**
  *
@@ -16,6 +16,7 @@ export function cssInliner(content: string, options: Configuration = {} as Confi
     find(html, config.apply).then(styles => {
       if (styles) {
         remove(html, config.remove);
+        relative(html, config.url);
 
         apply(html, styles);
         resolve(html.outerHTML);
