@@ -3,6 +3,21 @@ div {
   border-radius: 3px;
 }
 
+img {
+  width: 250px;
+}
+
+table {
+  width: 300px;
+  border: 20px solid #000;
+  border-spacing: 10px;
+  border-collapse: separate;
+}
+
+table td {
+  padding: 15px;
+}
+
 p {
   font-style: 16px;
   color: #8866CC!important;

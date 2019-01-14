@@ -24,7 +24,15 @@
     <script>
       window.onload = () => {
         cssInliner(
-          document.querySelector('html').innerHTML
+          document.querySelector('html').innerHTML,
+          {
+            properties: {
+              width: true,
+              border: true,
+              cellpadding: true,
+              cellspacing: true
+            }
+          }
         ).then(formatted => {
           console.log(formatted);
         });
@@ -33,13 +41,29 @@
   </head>
   <body>
     <div class="navbar-custom">
-      <a href="#">LINK</a>
+      <a href="/relative/path">LINK</a>
     </div>
 
     <br />
     <br />
 
-    <a href="#" class="btn-success">Success</a>
+    <a href="http://www.fullpath.com/succes/path" class="btn-success">Success</a>
+
+    <br />
+    <br />
+
+    <img src="https://i.imgflip.com/b62tb.jpg" border="" />
+
+    <br />
+    <br />
+
+    <table>
+      <tr>
+        <td>Col 1</td>
+        <td>Col 2</td>
+        <td>Col 3</td>
+      </tr>
+    </table>
 
     <br />
     <br />
