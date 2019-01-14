@@ -2,6 +2,7 @@
  *
  */
 export interface Configuration {
+  url?: string;
   css?: string;
   preserveMediaQueries?: boolean;
   apply: ApplyTags;
@@ -29,6 +30,7 @@ export interface RemoveTags {
  *
  */
 const config: Configuration = {
+  url: window.location.href,
   preserveMediaQueries: true,
   apply: {
     style: true,
@@ -46,8 +48,8 @@ const config: Configuration = {
  */
 export const mergeConfigurations = (ext: Configuration): Configuration => {
   Object.keys(config).forEach(key => {
-    if (ext[key]) {
-      config[key] = { ...config[key], ...ext[key] };
+    if (ext.hasOwnProperty(key)) {
+      config[key] = typeof config[key] !== 'object' ? ext[key] : { ...config[key], ...ext[key] };
     }
   });
 
@@ -58,3 +60,8 @@ export const mergeConfigurations = (ext: Configuration): Configuration => {
  *
  */
 export const PRESERVE_MEDIA_QUERIES = () => config.preserveMediaQueries;
+
+/**
+ *
+ */
+export const getUrl = (path: string): string => config.url + path;

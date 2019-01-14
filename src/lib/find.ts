@@ -1,5 +1,5 @@
 import { StyleMap, toObject } from './style';
-import { ApplyTags, PRESERVE_MEDIA_QUERIES } from './config';
+import { ApplyTags, PRESERVE_MEDIA_QUERIES, getUrl } from './config';
 
 /**
  *
@@ -57,7 +57,12 @@ const createMediaQueryStyle = (content: string) => {
  *
  */
 const getLinkContent = async (link: HTMLLinkElement): Promise<string> => {
-  const request = await fetch(link.href);
+  let href = link.getAttribute('href');
+  if (href.indexOf('http') === -1) {
+    href = getUrl(link.getAttribute('href'));
+  }
+
+  const request = await fetch(href);
   return await request.text();
 }
 
