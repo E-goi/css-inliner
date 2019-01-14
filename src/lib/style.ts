@@ -26,3 +26,15 @@ export const toObject = (style: string): StyleAttr[] => {
       .filter(style => style);
   }
 }
+
+/**
+ *
+ */
+export const clearValue = (value: string): string => {
+  const rs = value.match(/\d+p/g);
+  if (rs) {
+    return rs[0].replace('p', '');
+  }
+
+  return "";
+}

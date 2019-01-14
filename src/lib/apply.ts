@@ -1,5 +1,6 @@
-import { StyleMap, toObject } from './style';
-import { getUrl } from './config';
+import { StyleMap, toObject, clearValue } from './style';
+import { APPLY_TABLE_PROPERTIES, APPLY_WIDTH_PROPERTY, getTableProperties, getUrl } from './config';
+import { getPropertyValue } from './properties';
 
 interface InlineElementStyle {
   element: HTMLElement;
@@ -10,10 +11,10 @@ interface InlineElementStyle {
 /**
  *
  */
-export const apply = (doc: HTMLElement, styles: StyleMap[]): void => {
+export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
   const elements: InlineElementStyle[] = [];
 
-  return styles.forEach(item => {
+  styles.forEach(item => {
     doc.querySelectorAll(item.selector).forEach((el: HTMLElement) => {
       let element = elements.find(item => item.element === el);
       if (!element) {
@@ -41,10 +42,21 @@ export const apply = (doc: HTMLElement, styles: StyleMap[]): void => {
           }
 
           el.style[style.attr] = style.value.toString().replace('!important', '');
+          if (APPLY_WIDTH_PROPERTY && el['width']) {
+            el.setAttribute('width', clearValue(el.style['width']));
+          }
         }
       });
     });
   });
+
+  if (APPLY_TABLE_PROPERTIES) {
+    doc.querySelectorAll('table').forEach((table: HTMLTableElement) => 
+      getTableProperties().forEach(prop => 
+        table.setAttribute(prop, getPropertyValue(table, prop))
+      ) 
+    );
+  }
 }
 
 /**

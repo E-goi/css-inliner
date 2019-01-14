@@ -6,6 +6,7 @@ export interface Configuration {
   css?: string;
   preserveMediaQueries?: boolean;
   apply: ApplyTags;
+  properties: ApplyProperties;
   remove: RemoveTags;
 }
 
@@ -15,6 +16,16 @@ export interface Configuration {
 export interface ApplyTags {
   style: boolean;
   link: boolean;
+}
+
+/**
+ *
+ */
+export interface ApplyProperties {
+  width: boolean;
+  border: boolean;
+  cellpadding: boolean;
+  cellspacing: boolean;
 }
 
 /**
@@ -35,6 +46,12 @@ const config: Configuration = {
   apply: {
     style: true,
     link: true
+  },
+  properties: {
+    width: false,
+    border: false,
+    cellpadding: false,
+    cellspacing: false
   },
   remove: {
     style: true,
@@ -60,6 +77,21 @@ export const mergeConfigurations = (ext: Configuration): Configuration => {
  *
  */
 export const PRESERVE_MEDIA_QUERIES = () => config.preserveMediaQueries;
+
+/**
+ *
+ */
+export const APPLY_WIDTH_PROPERTY = () => config.properties.width;
+
+/**
+ *
+ */
+export const APPLY_TABLE_PROPERTIES = () => getTableProperties().length > 0;
+
+/**
+ *
+ */
+export const getTableProperties = () => ['border', 'cellpadding', 'cellspacing'].filter(prop => config.properties[prop]);
 
 /**
  *
