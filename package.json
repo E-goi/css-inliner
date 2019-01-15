@@ -6,7 +6,7 @@
   "author": "Tiago Temporin",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && cp package.json README.md dist/",
     "serve": "webpack-dev-server",
     "watch": "webpack --watch --progress --info-verbosity verbose"
   },
