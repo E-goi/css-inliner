@@ -13,7 +13,7 @@ To install the package, you can use npm or yarn:
 
 Import the package on your code
 
-```typscript
+```typescript
 import { cssInliner } from '@egoi/css-inliner';
 ```
 
