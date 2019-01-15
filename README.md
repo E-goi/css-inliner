@@ -6,7 +6,7 @@ Inline your css 100% in the browser and with no dependencies
 To install the package, you can use npm or yarn:
 
 ```bash
-  yarn add @egoi/css-inliner
+  yarn add @e-goi/css-inliner
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ To install the package, you can use npm or yarn:
 Import the package on your code
 
 ```typescript
-import { cssInliner } from '@egoi/css-inliner';
+import { cssInliner } from '@e-goi/css-inliner';
 ```
 
 Use the main function ```cssInliner``` to inject the style on the elements.
