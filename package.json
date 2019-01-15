@@ -1,6 +1,6 @@
 {
-  "name": "css-inliner",
-  "version": "0.0.1",
+  "name": "@egoi/css-inliner",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "build": "webpack",
