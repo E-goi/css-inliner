@@ -6,6 +6,7 @@ interface InlineElementStyle {
   element: HTMLElement;
   important: (string | number)[];
   preserve: (string | number)[];
+  attributes: string[];
 }
 
 /**
@@ -22,6 +23,7 @@ export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
         element = {
           element: el,
           important: [],
+          attributes: Object.keys(el.attributes).map(key => el.attributes[key].nodeName), 
           preserve: style && toObject(style).map(style => style && style.attr || null) || []
         };
 
@@ -42,7 +44,11 @@ export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
           }
 
           el.style[style.attr] = style.value.toString().replace('!important', '');
-          if (APPLY_WIDTH_PROPERTY && el['width']) {
+          if (
+            APPLY_WIDTH_PROPERTY &&
+            el['width'] &&
+            !element.attributes.find(attr => attr === 'width')
+          ) {
             el.setAttribute('width', clearValue(el.style['width']));
           }
         }
