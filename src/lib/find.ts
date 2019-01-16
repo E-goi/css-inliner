@@ -58,7 +58,10 @@ const createMediaQueryStyle = (content: string) => {
  */
 const getLinkContent = async (link: HTMLLinkElement): Promise<string> => {
   let href = link.getAttribute('href');
-  if (href.indexOf('http') === -1) {
+  if (
+    href.indexOf('/') === 0 &&
+    href.indexOf('/', 1) !== 1
+  ) {
     href = getUrl(link.getAttribute('href'));
   }
 
@@ -89,7 +92,7 @@ const extract = (content: string)  => {
   if (selectors) {
     return selectors.map(selector => {
       try {
-        const css = content.match(new RegExp(`${selector}[^}]*`, 'gm'));
+        const css = content.match(new RegExp(`[^| ](${selector}[^}]*)`, 'gm'));
         if (css) {
           const style = toObject(
             css.join('')
@@ -109,4 +112,5 @@ const extract = (content: string)  => {
     })
     .reduce((acc, cur) => acc.concat(cur), []);
   }
+  console.log('-----------------------------------------')
 }

@@ -72,7 +72,11 @@ export const relative = (doc: HTMLElement, url: string) => {
   doc.querySelectorAll('[href],[src]').forEach((el: HTMLElement) => {
     const attr = el.hasAttribute('href') ? 'href' : 'src';
     const link = el.getAttribute(attr);
-    if (link.indexOf('http') === -1) {
+    // validate if the link is relative
+    if (
+      link.indexOf('/') === 0 &&
+      link.indexOf('/', 1) !== 1
+    ) {
       el.setAttribute(attr, getUrl(link));
     }
   });
