@@ -1,7 +1,7 @@
 {
   "name": "@e-goi/css-inliner",
   "description": "Inline your css 100% in the browser and with no dependencies",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "author": "Tiago Temporin",
   "main": "index.js",
