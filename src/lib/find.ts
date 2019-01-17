@@ -97,6 +97,7 @@ const extract = (content: string)  => {
           const style = toObject(
             css.join('')
             .replace(selector, '')
+            .replace('}', '')
             .replace(/\n/g, '')
             .replace(/;[ ]+/g, ';')
             .trim()
