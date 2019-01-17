@@ -92,7 +92,7 @@ const extract = (content: string)  => {
   if (selectors) {
     return selectors.map(selector => {
       try {
-        const css = content.match(new RegExp(`[^| ](${selector}[^}]*)`, 'gm'));
+        const css = content.match(new RegExp(`(^${selector}|(}\s+|})${selector})[^}]*`, 'gm'));
         if (css) {
           const style = toObject(
             css.join('')
@@ -112,5 +112,4 @@ const extract = (content: string)  => {
     })
     .reduce((acc, cur) => acc.concat(cur), []);
   }
-  console.log('-----------------------------------------')
 }
