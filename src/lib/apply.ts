@@ -10,6 +10,26 @@ interface InlineElementStyle {
 }
 
 /**
+ * 
+ */
+const getElement = (el: HTMLElement, elements: InlineElementStyle[]): InlineElementStyle => {
+  let element = elements.find(item => item.element === el);
+  if (!element) {
+    const style = el.getAttribute('style');
+    element = {
+      element: el,
+      important: [],
+      attributes: Object.keys(el.attributes).map(key => el.attributes[key].nodeName), 
+      preserve: style && toObject(style).map(style => style && style.attr || null) || []
+    };
+
+    elements.push(element);
+  }
+
+  return element;
+}
+
+/**
  *
  */
 export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
@@ -17,18 +37,7 @@ export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
 
   styles.forEach(item => {
     doc.querySelectorAll(item.selector).forEach((el: HTMLElement) => {
-      let element = elements.find(item => item.element === el);
-      if (!element) {
-        const style = el.getAttribute('style');
-        element = {
-          element: el,
-          important: [],
-          attributes: Object.keys(el.attributes).map(key => el.attributes[key].nodeName), 
-          preserve: style && toObject(style).map(style => style && style.attr || null) || []
-        };
-
-        elements.push(element);
-      }
+      const element = getElement(el, elements);
 
       item.style.forEach(style => {
         if (style && element.preserve.indexOf(style.attr) === -1) {
