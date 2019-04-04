@@ -7,6 +7,7 @@ interface InlineElementStyle {
   important: (string | number)[];
   preserve: (string | number)[];
   attributes: string[];
+  style: object;
 }
 
 /**
@@ -20,7 +21,8 @@ const getElement = (el: HTMLElement, elements: InlineElementStyle[]): InlineElem
       element: el,
       important: [],
       attributes: Object.keys(el.attributes).map(key => el.attributes[key].nodeName), 
-      preserve: style && toObject(style).map(style => style && style.attr || null) || []
+      preserve: style && toObject(style).map(style => style && style.attr || null) || [],
+      style: {}
     };
 
     elements.push(element);
@@ -30,11 +32,25 @@ const getElement = (el: HTMLElement, elements: InlineElementStyle[]): InlineElem
 }
 
 /**
+ * 
+ */
+const buildCssText = (el: InlineElementStyle): string => {
+  let style = '';
+
+  Object.keys(el.style).forEach(attr => {
+    style = `${style}${attr}:${el.style[attr]};`
+  });
+
+  return style;
+}
+
+/**
  *
  */
 export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
   const elements: InlineElementStyle[] = [];
 
+  // build element style
   styles.forEach(item => {
     doc.querySelectorAll(item.selector).forEach((el: HTMLElement) => {
       const element = getElement(el, elements);
@@ -52,17 +68,23 @@ export const apply = (doc: HTMLElement, styles: StyleMap[]) => {
               element.important.push(style.attr);
           }
 
-          el.style[style.attr] = style.value.toString().replace('!important', '');
-          if (
-            APPLY_WIDTH_PROPERTY &&
-            el['width'] &&
-            !element.attributes.find(attr => attr === 'width')
-          ) {
-            el.setAttribute('width', clearValue(el.style['width']));
-          }
+          element.style[style.attr] = style.value.toString().replace('!important', '');
         }
       });
     });
+  });
+
+  // apply element style
+  elements.forEach(el => {
+    el.element.style.cssText = `${buildCssText(el)}${el.element.style.cssText}`;
+
+    if (
+      APPLY_WIDTH_PROPERTY &&
+      el['width'] &&
+      !el.attributes.find(attr => attr === 'width')
+    ) {
+      el.element.setAttribute('width', clearValue(el.element.style['width']));
+    }
   });
 
   if (APPLY_TABLE_PROPERTIES) {
